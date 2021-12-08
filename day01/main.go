@@ -1,5 +1,3 @@
-// Package main for AOC 2020 day 1
-//
 package main
 
 import (
