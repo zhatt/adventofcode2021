@@ -55,9 +55,7 @@ func calculateRating(criteria criteria, numBits int, valuesIn []uint64) uint64 {
 	rating := uint64(0)
 
 	values := make([]uint64, len(valuesIn))
-	for index, value := range valuesIn {
-		values[index] = value
-	}
+	copy(values, valuesIn)
 
 	// Loop with 1 bit mask shifting left to right
 	for mask := uint64(1) << (numBits - 1); mask != 0; mask >>= 1 {
