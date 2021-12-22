@@ -41,3 +41,15 @@ func TestDelete(t *testing.T) {
 	assert.False(t, set.Contains("a"))
 	assert.True(t, set.Contains("b"))
 }
+
+func TestValues(t *testing.T) {
+	set := NewStringSet()
+	set.Add("a")
+	set.Add("b")
+
+	values := set.Values()
+
+	assert.Equal(t, set.Size(), len(values))
+	assert.Contains(t, values, "a")
+	assert.Contains(t, values, "b")
+}
