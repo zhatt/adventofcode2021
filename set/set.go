@@ -7,8 +7,8 @@ type StringSet struct {
 	items map[string]struct{}
 }
 
-func NewStringSet() *StringSet {
-	set := &StringSet{}
+func NewStringSet() StringSet {
+	set := StringSet{}
 	set.items = make(map[string]struct{})
 	return set
 }
