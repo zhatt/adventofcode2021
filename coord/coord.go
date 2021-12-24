@@ -137,3 +137,19 @@ func RelationNegy(coord1, coord2 Coord) int {
 	// Below is considered part of the to the left set.
 	return -1
 }
+
+func OutOfBounds(coord Coord, bounds []Coord) bool {
+	min := MinBound(bounds)
+	max := MaxBound(bounds)
+	switch {
+	case coord.Xval < min.Xval:
+		return true
+	case coord.Yval < min.Yval:
+		return true
+	case coord.Xval > max.Xval:
+		return true
+	case coord.Yval > max.Yval:
+		return true
+	}
+	return false
+}

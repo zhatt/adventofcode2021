@@ -42,3 +42,15 @@ func TestRelation(t *testing.T) {
 	assert.Equal(t, -1, RelationNegy(Coord{10, 2}, Coord{2, 2}))
 	assert.Equal(t, 1, RelationNegy(Coord{-10, -10}, Coord{-2, -2}))
 }
+
+func TestOutOfBounds(t *testing.T) {
+	bounds := []Coord{
+		{Xval: 0, Yval: 0},
+		{Xval: 3, Yval: 2},
+		{Xval: 2, Yval: 4},
+	}
+	assert.False(t, OutOfBounds(Coord{Xval: 1, Yval: 1}, bounds))
+	assert.False(t, OutOfBounds(Coord{Xval: 0, Yval: 4}, bounds))
+	assert.True(t, OutOfBounds(Coord{Xval: -1, Yval: 4}, bounds))
+	assert.True(t, OutOfBounds(Coord{Xval: 1, Yval: 5}, bounds))
+}
