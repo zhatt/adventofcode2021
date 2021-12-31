@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 
@@ -18,7 +17,6 @@ func TestPermutation(t *testing.T) {
 
 	permutation_set := set.NewStringSet()
 	for p.Next() {
-		fmt.Println(a)
 		permutation_set.Add(strings.Join(a, ""))
 	}
 
