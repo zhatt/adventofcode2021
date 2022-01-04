@@ -45,12 +45,12 @@ func TestRelation(t *testing.T) {
 
 func TestOutOfBounds(t *testing.T) {
 	bounds := []Coord{
-		{Xval: 0, Yval: 0},
-		{Xval: 3, Yval: 2},
-		{Xval: 2, Yval: 4},
+		{X: 0, Y: 0},
+		{X: 3, Y: 2},
+		{X: 2, Y: 4},
 	}
-	assert.False(t, OutOfBounds(Coord{Xval: 1, Yval: 1}, bounds))
-	assert.False(t, OutOfBounds(Coord{Xval: 0, Yval: 4}, bounds))
-	assert.True(t, OutOfBounds(Coord{Xval: -1, Yval: 4}, bounds))
-	assert.True(t, OutOfBounds(Coord{Xval: 1, Yval: 5}, bounds))
+	assert.False(t, OutOfBounds(Coord{X: 1, Y: 1}, bounds))
+	assert.False(t, OutOfBounds(Coord{X: 0, Y: 4}, bounds))
+	assert.True(t, OutOfBounds(Coord{X: -1, Y: 4}, bounds))
+	assert.True(t, OutOfBounds(Coord{X: 1, Y: 5}, bounds))
 }

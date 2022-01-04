@@ -35,20 +35,20 @@ func getIncrement(a, b int) int {
 
 func (v *ventMap) addVent(line line) {
 
-	xIncrement := getIncrement(line.from.Xval, line.to.Xval)
-	yIncrement := getIncrement(line.from.Yval, line.to.Yval)
+	xIncrement := getIncrement(line.from.X, line.to.X)
+	yIncrement := getIncrement(line.from.Y, line.to.Y)
 
-	x := line.from.Xval
-	y := line.from.Yval
+	x := line.from.X
+	y := line.from.Y
 
-	v.data[coord.Coord{Xval: x, Yval: y}]++
+	v.data[coord.Coord{X: x, Y: y}]++
 	for {
-		if x == line.to.Xval && y == line.to.Yval {
+		if x == line.to.X && y == line.to.Y {
 			break
 		}
 		x += xIncrement
 		y += yIncrement
-		v.data[coord.Coord{Xval: x, Yval: y}]++
+		v.data[coord.Coord{X: x, Y: y}]++
 	}
 }
 
@@ -77,14 +77,14 @@ func parseInput(inputList []string) []line {
 		aoc.PanicOnError(err)
 		y, err := strconv.Atoi(vals[1])
 		aoc.PanicOnError(err)
-		from := coord.Coord{Xval: x, Yval: y}
+		from := coord.Coord{X: x, Y: y}
 
 		vals = strings.Split(tokens[2], ",")
 		x, err = strconv.Atoi(vals[0])
 		aoc.PanicOnError(err)
 		y, err = strconv.Atoi(vals[1])
 		aoc.PanicOnError(err)
-		to := coord.Coord{Xval: x, Yval: y}
+		to := coord.Coord{X: x, Y: y}
 
 		line := line{from: from, to: to}
 		lines = append(lines, line)
@@ -93,7 +93,7 @@ func parseInput(inputList []string) []line {
 }
 
 func isManhattan(line line) bool {
-	return line.from.Xval == line.to.Xval || line.from.Yval == line.to.Yval
+	return line.from.X == line.to.X || line.from.Y == line.to.Y
 }
 
 func calculateNumDangerous(onlyManhattan bool, inputList []string) int {

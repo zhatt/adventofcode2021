@@ -22,7 +22,7 @@ func (hm *heightmap) addRow(s string) {
 }
 
 func (hm *heightmap) getValue(c coord.Coord) int {
-	value, err := strconv.Atoi(hm.data[c.Yval][c.Xval : c.Xval+1])
+	value, err := strconv.Atoi(hm.data[c.Y][c.X : c.X+1])
 	aoc.PanicOnError(err)
 	return value
 }
@@ -37,22 +37,22 @@ func (hm *heightmap) isLowPoint(c coord.Coord) bool {
 	numColumns, numRows := hm.getSize()
 
 	for _, coordToCheck := range []coord.Coord{
-		{Xval: 0, Yval: 1},
-		{Xval: 0, Yval: -1},
-		{Xval: 1, Yval: 0},
-		{Xval: -1, Yval: 0},
+		{X: 0, Y: 1},
+		{X: 0, Y: -1},
+		{X: 1, Y: 0},
+		{X: -1, Y: 0},
 	} {
 		toCheck := coord.Add(c, coordToCheck)
-		if toCheck.Xval < 0 {
+		if toCheck.X < 0 {
 			continue
 		}
-		if toCheck.Xval >= numColumns {
+		if toCheck.X >= numColumns {
 			continue
 		}
-		if toCheck.Yval < 0 {
+		if toCheck.Y < 0 {
 			continue
 		}
-		if toCheck.Yval >= numRows {
+		if toCheck.Y >= numRows {
 			continue
 		}
 
@@ -71,7 +71,7 @@ func (hm *heightmap) getBasinSizeR(c coord.Coord, visited map[coord.Coord]struct
 
 	numColumns, numRows := hm.getSize()
 
-	if c.Xval < 0 || c.Yval < 0 || c.Xval >= numColumns || c.Yval >= numRows {
+	if c.X < 0 || c.Y < 0 || c.X >= numColumns || c.Y >= numRows {
 		return 0
 	}
 
@@ -83,10 +83,10 @@ func (hm *heightmap) getBasinSizeR(c coord.Coord, visited map[coord.Coord]struct
 	basinSize := 1
 
 	for _, coordToCheck := range []coord.Coord{
-		{Xval: 0, Yval: 1},
-		{Xval: 0, Yval: -1},
-		{Xval: 1, Yval: 0},
-		{Xval: -1, Yval: 0},
+		{X: 0, Y: 1},
+		{X: 0, Y: -1},
+		{X: 1, Y: 0},
+		{X: -1, Y: 0},
 	} {
 		toCheck := coord.Add(c, coordToCheck)
 		basinSize += hm.getBasinSizeR(toCheck, visited)
@@ -118,7 +118,7 @@ func findRiskLevel(hm *heightmap) (int, []coord.Coord) {
 	numColumns, numRows := hm.getSize()
 	for row := 0; row < numRows; row++ {
 		for column := 0; column < numColumns; column++ {
-			location := coord.Coord{Xval: column, Yval: row}
+			location := coord.Coord{X: column, Y: row}
 			if hm.isLowPoint(location) {
 				lowPoints = append(lowPoints, location)
 				riskLevel += hm.getValue(location) + 1

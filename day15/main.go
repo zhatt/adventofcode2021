@@ -27,8 +27,8 @@ func parseInput(inputLines []string) [][]int {
 
 // Calculate shortest distance using Dijkstra's algorithm.
 func simulate(data [][]int) int {
-	minBound := coord.Coord{Xval: 0, Yval: 0}
-	maxBound := coord.Coord{Xval: len(data[0]) - 1, Yval: len(data) - 1}
+	minBound := coord.Coord{X: 0, Y: 0}
+	maxBound := coord.Coord{X: len(data[0]) - 1, Y: len(data) - 1}
 	bounds := []coord.Coord{minBound, maxBound}
 
 	workQueue := workqueue.NewWorkQueue()
@@ -36,13 +36,13 @@ func simulate(data [][]int) int {
 	locations := make(map[coord.Coord]*workqueue.Item)
 
 	// Initialize datastructures
-	for y := minBound.Yval; y <= maxBound.Yval; y++ {
-		for x := minBound.Xval; x <= maxBound.Xval; x++ {
+	for y := minBound.Y; y <= maxBound.Y; y++ {
+		for x := minBound.X; x <= maxBound.X; x++ {
 			distance := math.MaxInt
 			if x == 0 && y == 0 {
 				distance = 0
 			}
-			coord := coord.Coord{Xval: x, Yval: y}
+			coord := coord.Coord{X: x, Y: y}
 			work := workqueue.NewItem(coord, distance)
 			unvisited[coord] = true
 			locations[coord] = work
@@ -57,10 +57,10 @@ func simulate(data [][]int) int {
 		currentLocation := work.Location
 
 		for _, delta := range []coord.Coord{
-			{Xval: 1, Yval: 0},
-			{Xval: -1, Yval: 0},
-			{Xval: 0, Yval: 1},
-			{Xval: 0, Yval: -1},
+			{X: 1, Y: 0},
+			{X: -1, Y: 0},
+			{X: 0, Y: 1},
+			{X: 0, Y: -1},
 		} {
 			neighborLocation := coord.Add(currentLocation, delta)
 			if coord.OutOfBounds(neighborLocation, bounds) {
@@ -72,7 +72,7 @@ func simulate(data [][]int) int {
 			}
 
 			newNeighborDistance := work.Distance +
-				data[neighborLocation.Yval][neighborLocation.Xval]
+				data[neighborLocation.Y][neighborLocation.X]
 
 			neighbor := locations[neighborLocation]
 			if newNeighborDistance < neighbor.Distance {

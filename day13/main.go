@@ -39,11 +39,11 @@ func (paper *paper) addPoint(c coord.Coord) {
 func (paper *paper) fold(instruction instruction) {
 	if instruction.direction == foldX {
 		for point := range paper.points {
-			if point.Xval > instruction.location {
+			if point.X > instruction.location {
 				delete(paper.points, point)
 				newPoint := coord.Coord{
-					Xval: instruction.location - (point.Xval - instruction.location),
-					Yval: point.Yval,
+					X: instruction.location - (point.X - instruction.location),
+					Y: point.Y,
 				}
 
 				paper.points[newPoint] = struct{}{}
@@ -53,11 +53,11 @@ func (paper *paper) fold(instruction instruction) {
 	}
 	if instruction.direction == foldY {
 		for point := range paper.points {
-			if point.Yval > instruction.location {
+			if point.Y > instruction.location {
 				delete(paper.points, point)
 				newPoint := coord.Coord{
-					Xval: point.Xval,
-					Yval: instruction.location - (point.Yval - instruction.location),
+					X: point.X,
+					Y: instruction.location - (point.Y - instruction.location),
 				}
 
 				paper.points[newPoint] = struct{}{}
@@ -82,12 +82,12 @@ func (paper paper) String() string {
 	maxBound := coord.MaxBound(coords)
 
 	output := ""
-	for y := minBound.Yval; y <= maxBound.Yval; y++ {
+	for y := minBound.Y; y <= maxBound.Y; y++ {
 		if y != 0 {
 			output += "\n"
 		}
-		for x := minBound.Xval; x <= maxBound.Xval; x++ {
-			if _, exists := paper.points[coord.Coord{Xval: x, Yval: y}]; exists {
+		for x := minBound.X; x <= maxBound.X; x++ {
+			if _, exists := paper.points[coord.Coord{X: x, Y: y}]; exists {
 				output += "#"
 			} else {
 				output += " "
@@ -111,7 +111,7 @@ func parseInput(inputLines []string) (paper, []instruction) {
 		aoc.PanicOnError(err)
 		yval, err := strconv.Atoi(tokens[1])
 		aoc.PanicOnError(err)
-		paper.addPoint(coord.Coord{Xval: xval, Yval: yval})
+		paper.addPoint(coord.Coord{X: xval, Y: yval})
 	}
 
 	for _, line := range inputLines {

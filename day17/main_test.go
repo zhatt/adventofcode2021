@@ -15,8 +15,8 @@ var exampleInput1 = []string{
 func TestParseInput(t *testing.T) {
 	bounds := parseInput(exampleInput1)
 
-	assert.Equal(t, coord.Coord{Xval: 20, Yval: -10}, bounds.min)
-	assert.Equal(t, coord.Coord{Xval: 30, Yval: -5}, bounds.max)
+	assert.Equal(t, coord.Coord{X: 20, Y: -10}, bounds.min)
+	assert.Equal(t, coord.Coord{X: 30, Y: -5}, bounds.max)
 }
 
 func TestPart1Example1(t *testing.T) {

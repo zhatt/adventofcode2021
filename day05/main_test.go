@@ -26,8 +26,8 @@ func TestParseInput(t *testing.T) {
 	lines := parseInput(exampleInput)
 
 	assert.Equal(t, 10, len(lines))
-	assert.Equal(t, coord.Coord{Xval: 8, Yval: 0}, lines[1].from)
-	assert.Equal(t, coord.Coord{Xval: 1, Yval: 4}, lines[7].to)
+	assert.Equal(t, coord.Coord{X: 8, Y: 0}, lines[1].from)
+	assert.Equal(t, coord.Coord{X: 1, Y: 4}, lines[7].to)
 }
 
 func TestPart1Example1(t *testing.T) {

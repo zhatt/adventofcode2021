@@ -36,9 +36,9 @@ var exampleInput1 = []string{
 func TestParseInput(t *testing.T) {
 	paper, instructions := parseInput(exampleInput1)
 	assert.Equal(t, 18, len(paper.points))
-	assert.Contains(t, paper.points, coord.Coord{Xval: 6, Yval: 10})
-	assert.Contains(t, paper.points, coord.Coord{Xval: 9, Yval: 0})
-	assert.Contains(t, paper.points, coord.Coord{Xval: 0, Yval: 13})
+	assert.Contains(t, paper.points, coord.Coord{X: 6, Y: 10})
+	assert.Contains(t, paper.points, coord.Coord{X: 9, Y: 0})
+	assert.Contains(t, paper.points, coord.Coord{X: 0, Y: 13})
 
 	assert.Equal(t, []instruction{
 		newInstruction(foldY, 7),

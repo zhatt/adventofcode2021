@@ -8,9 +8,9 @@ import (
 )
 
 var items = map[coord.Coord]int{
-	{Xval: 3, Yval: 0}: 3,
-	{Xval: 2, Yval: 0}: 2,
-	{Xval: 4, Yval: 0}: 4,
+	{X: 3, Y: 0}: 3,
+	{X: 2, Y: 0}: 2,
+	{X: 4, Y: 0}: 4,
 }
 
 func create() WorkQueue {
@@ -25,20 +25,20 @@ func create() WorkQueue {
 func TestCreatePushPop(t *testing.T) {
 	wq := create()
 	assert.Equal(t, 3, wq.Len())
-	assert.Equal(t, coord.Coord{Xval: 2, Yval: 0}, wq.Pop().Location)
-	assert.Equal(t, coord.Coord{Xval: 3, Yval: 0}, wq.Pop().Location)
-	assert.Equal(t, coord.Coord{Xval: 4, Yval: 0}, wq.Pop().Location)
+	assert.Equal(t, coord.Coord{X: 2, Y: 0}, wq.Pop().Location)
+	assert.Equal(t, coord.Coord{X: 3, Y: 0}, wq.Pop().Location)
+	assert.Equal(t, coord.Coord{X: 4, Y: 0}, wq.Pop().Location)
 	assert.Equal(t, 0, wq.Len())
 }
 
 func TestUpdate(t *testing.T) {
 	wq := create()
 
-	work := NewItem(coord.Coord{Xval: 1, Yval: 0}, 1)
+	work := NewItem(coord.Coord{X: 1, Y: 0}, 1)
 	assert.Equal(t, -1, work.index)
 	wq.Push(work)
 	assert.Equal(t, 0, work.index)
-	assert.Equal(t, coord.Coord{Xval: 1, Yval: 0}, wq.Pop().Location)
+	assert.Equal(t, coord.Coord{X: 1, Y: 0}, wq.Pop().Location)
 	assert.Equal(t, -1, work.index)
 	wq.Push(work)
 	assert.Equal(t, 0, work.index)
@@ -47,9 +47,9 @@ func TestUpdate(t *testing.T) {
 	assert.NotEqual(t, 0, work.index)
 
 	assert.Equal(t, 4, wq.Len())
-	assert.Equal(t, coord.Coord{Xval: 2, Yval: 0}, wq.Pop().Location)
-	assert.Equal(t, coord.Coord{Xval: 3, Yval: 0}, wq.Pop().Location)
-	assert.Equal(t, coord.Coord{Xval: 4, Yval: 0}, wq.Pop().Location)
-	assert.Equal(t, coord.Coord{Xval: 1, Yval: 0}, wq.Pop().Location)
+	assert.Equal(t, coord.Coord{X: 2, Y: 0}, wq.Pop().Location)
+	assert.Equal(t, coord.Coord{X: 3, Y: 0}, wq.Pop().Location)
+	assert.Equal(t, coord.Coord{X: 4, Y: 0}, wq.Pop().Location)
+	assert.Equal(t, coord.Coord{X: 1, Y: 0}, wq.Pop().Location)
 	assert.Equal(t, 0, wq.Len())
 }

@@ -20,9 +20,9 @@ var exampleInput = []string{
 func TestParseInput(t *testing.T) {
 	hm := parseInput(exampleInput)
 
-	assert.Equal(t, 3, hm.getValue(coord.Coord{Xval: 0, Yval: 1}))
-	assert.Equal(t, 7, hm.getValue(coord.Coord{Xval: 3, Yval: 3}))
-	assert.Equal(t, 8, hm.getValue(coord.Coord{Xval: 4, Yval: 3}))
+	assert.Equal(t, 3, hm.getValue(coord.Coord{X: 0, Y: 1}))
+	assert.Equal(t, 7, hm.getValue(coord.Coord{X: 3, Y: 3}))
+	assert.Equal(t, 8, hm.getValue(coord.Coord{X: 4, Y: 3}))
 }
 
 func TestPart1Example(t *testing.T) {

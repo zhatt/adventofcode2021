@@ -17,8 +17,8 @@ func parseInput(inputLines []string) bounds {
 
 	// Format: target area: x=20..30, y=-10..-5
 	_, err := fmt.Sscanf(inputLines[0], "target area: x=%d..%d, y=%d..%d",
-		&bounds.min.Xval, &bounds.max.Xval,
-		&bounds.min.Yval, &bounds.max.Yval,
+		&bounds.min.X, &bounds.max.X,
+		&bounds.min.Y, &bounds.max.Y,
 	)
 	aoc.PanicOnError(err)
 
@@ -37,13 +37,13 @@ func calculateInitialXRange(bounds bounds) (int, int) {
 			velocity--
 		}
 
-		if x >= bounds.min.Xval {
+		if x >= bounds.min.X {
 			minInitialXVelocity = initialXVelocity - 1
 			break
 		}
 	}
 
-	maxInitialVelocity = bounds.max.Xval
+	maxInitialVelocity = bounds.max.X
 
 	return minInitialXVelocity, maxInitialVelocity
 }
@@ -65,12 +65,12 @@ func simulateY(bounds bounds, initialSteps int, totalSteps int, velocity int) (
 			maxHeight = y
 		}
 
-		if y >= bounds.min.Yval && y <= bounds.max.Yval && s >= initialSteps-1 {
+		if y >= bounds.min.Y && y <= bounds.max.Y && s >= initialSteps-1 {
 			inRange++
 			break
 		}
 
-		if y < bounds.min.Yval {
+		if y < bounds.min.Y {
 			break
 		}
 	}
@@ -79,11 +79,11 @@ func simulateY(bounds bounds, initialSteps int, totalSteps int, velocity int) (
 		return maxHeight, true, false, false
 	}
 
-	if y > bounds.max.Yval {
+	if y > bounds.max.Y {
 		return 0, false, true, false
 	}
 
-	if y < bounds.min.Yval {
+	if y < bounds.min.Y {
 		return 0, false, false, true
 	}
 
@@ -101,7 +101,7 @@ func simulate(bounds bounds, xVel int, inRangeSet map[coord.Coord]bool) int {
 		x += xVel
 		xVel -= 1
 
-		if x > bounds.max.Xval {
+		if x > bounds.max.X {
 			break
 		}
 
@@ -109,7 +109,7 @@ func simulate(bounds bounds, xVel int, inRangeSet map[coord.Coord]bool) int {
 			break
 		}
 
-		if x >= bounds.min.Xval {
+		if x >= bounds.min.X {
 			// In region
 			// Need to simulate y
 			for yVel := 0; ; {
@@ -128,7 +128,7 @@ func simulate(bounds bounds, xVel int, inRangeSet map[coord.Coord]bool) int {
 					if height > maxHeight {
 						maxHeight = height
 					}
-					inRangeSet[coord.Coord{Xval: initialXvel, Yval: yVel}] = true
+					inRangeSet[coord.Coord{X: initialXvel, Y: yVel}] = true
 				}
 				yVel++
 
@@ -149,7 +149,7 @@ func simulate(bounds bounds, xVel int, inRangeSet map[coord.Coord]bool) int {
 					if height > maxHeight {
 						maxHeight = height
 					}
-					inRangeSet[coord.Coord{Xval: initialXvel, Yval: yVel}] = true
+					inRangeSet[coord.Coord{X: initialXvel, Y: yVel}] = true
 				}
 
 				yVel--
