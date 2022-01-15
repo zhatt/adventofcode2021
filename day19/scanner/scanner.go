@@ -3,6 +3,7 @@ package scanner
 import (
 	"fmt"
 	"zhatt/aoc2021/aoc"
+	"zhatt/aoc2021/coord"
 )
 
 type Rotation struct {
@@ -56,26 +57,10 @@ var Orientations = [24]Rotation{
 	{3, 0, 3}, // -y
 }
 
-type Coord struct {
-	X, Y, Z int
-}
-
-func abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
-}
-
-// DistanceManhattan returns the distance between coords.
-func DistanceManhattan(coord1, coord2 Coord) int {
-	return abs(coord2.X-coord1.X) + abs(coord2.Y-coord1.Y) + abs(coord2.Z-coord1.Z)
-}
-
 type Scanner struct {
 	number   int
-	location Coord // beacon location are relative to this position
-	beacons  []Coord
+	location coord.Coord3d // beacon location are relative to this position
+	beacons  []coord.Coord3d
 	rotation Rotation
 }
 
@@ -83,14 +68,14 @@ func New() Scanner {
 	return Scanner{}
 }
 
-func (s *Scanner) Number() int     { return s.number }
-func (s *Scanner) Location() Coord { return s.location }
+func (s *Scanner) Number() int             { return s.number }
+func (s *Scanner) Location() coord.Coord3d { return s.location }
 
-func (s *Scanner) SetRotation(rotation Rotation) { s.rotation = rotation }
-func (s *Scanner) SetLocation(location Coord)    { s.location = location }
+func (s *Scanner) SetRotation(rotation Rotation)      { s.rotation = rotation }
+func (s *Scanner) SetLocation(location coord.Coord3d) { s.location = location }
 
-func (s *Scanner) Beacons() []Coord {
-	b := make([]Coord, len(s.beacons))
+func (s *Scanner) Beacons() []coord.Coord3d {
+	b := make([]coord.Coord3d, len(s.beacons))
 	copy(b, s.beacons)
 	for index, beacon := range b {
 		for count := 0; count < s.rotation.x; count++ {
@@ -110,7 +95,7 @@ func (s *Scanner) Beacons() []Coord {
 	return b
 }
 
-func (s *Scanner) Bounds() (Coord, Coord) {
+func (s *Scanner) Bounds() (coord.Coord3d, coord.Coord3d) {
 	beacons := s.Beacons()
 	min := beacons[0]
 	max := beacons[0]
@@ -165,7 +150,7 @@ func (s *Scanner) Load(data []string) {
 	aoc.PanicOnError(err)
 
 	for _, line := range data[1:] {
-		coord := Coord{}
+		coord := coord.Coord3d{}
 
 		// Format: 568,-2007,-577
 		_, err := fmt.Sscanf(line, "%d,%d,%d",
@@ -180,7 +165,7 @@ func (s *Scanner) Load(data []string) {
 }
 
 // See if scanner b can be correlated to scanner a by rotating and shifting it.
-func Correlate(a, b Scanner) (bool, Coord, Rotation) {
+func Correlate(a, b Scanner) (bool, coord.Coord3d, Rotation) {
 	for _, rotation := range Orientations {
 		b.SetRotation(rotation)
 		correlated, location := correlateLocation(a, b)
@@ -188,28 +173,28 @@ func Correlate(a, b Scanner) (bool, Coord, Rotation) {
 			return true, location, rotation
 		}
 	}
-	return false, Coord{}, Rotation{}
+	return false, coord.Coord3d{}, Rotation{}
 }
 
 // See if scanner b can be correlated to scanner a by shifting it.
-func correlateLocation(a, b Scanner) (bool, Coord) {
+func correlateLocation(a, b Scanner) (bool, coord.Coord3d) {
 	aMinBound, aMaxBound := a.Bounds()
 
 	// NB.  b is a copy of the original Scanner so we don't need to create a
 	// copy because we are not modifiying the beacon slice.
-	b.SetLocation(Coord{0, 0, 0})
+	b.SetLocation(coord.Coord3d{X: 0, Y: 0, Z: 0})
 	bMinBound, bMaxBound := b.Bounds()
 
 	// Find the location to start and end checking b's beacons correlation
 	// with a's beacons.
-	minLocationToCheck := Coord{-(bMaxBound.X - aMinBound.X), -(bMaxBound.Y - aMinBound.Y), -(bMaxBound.Z - aMinBound.Z)}
-	maxLocationToCheck := Coord{-(bMinBound.X - aMaxBound.X), -(bMinBound.Y - aMaxBound.Y), -(bMinBound.Z - aMaxBound.Z)}
+	minLocationToCheck := coord.Coord3d{X: -(bMaxBound.X - aMinBound.X), Y: -(bMaxBound.Y - aMinBound.Y), Z: -(bMaxBound.Z - aMinBound.Z)}
+	maxLocationToCheck := coord.Coord3d{X: -(bMinBound.X - aMaxBound.X), Y: -(bMinBound.Y - aMaxBound.Y), Z: -(bMinBound.Z - aMaxBound.Z)}
 
 	// Create sets of beacons to check against.  We create a set of full
 	// beacons and sets projected to x line and xy plain.
-	aBeaconSetY0Z0 := make(map[Coord]bool)
-	aBeaconSetZ0 := make(map[Coord]bool)
-	aBeaconSet := make(map[Coord]bool)
+	aBeaconSetY0Z0 := make(map[coord.Coord3d]bool)
+	aBeaconSetZ0 := make(map[coord.Coord3d]bool)
+	aBeaconSet := make(map[coord.Coord3d]bool)
 	for _, coord := range a.Beacons() {
 		aBeaconSet[coord] = true
 		coord.Z = 0
@@ -219,7 +204,7 @@ func correlateLocation(a, b Scanner) (bool, Coord) {
 	}
 
 	for x := minLocationToCheck.X; x <= maxLocationToCheck.X; x++ {
-		bLocation := Coord{x, 0, 0}
+		bLocation := coord.Coord3d{X: x, Y: 0, Z: 0}
 		b.SetLocation(bLocation)
 
 		// Check for correlation in only X.  If there is no correlation
@@ -239,7 +224,7 @@ func correlateLocation(a, b Scanner) (bool, Coord) {
 		}
 
 		for y := minLocationToCheck.Y; y <= maxLocationToCheck.Y; y++ {
-			bLocation := Coord{x, y, 0}
+			bLocation := coord.Coord3d{X: x, Y: y, Z: 0}
 			b.SetLocation(bLocation)
 
 			// Check for correlation in only X and Y.  If there is
@@ -258,7 +243,7 @@ func correlateLocation(a, b Scanner) (bool, Coord) {
 
 			for z := minLocationToCheck.Z; z <= maxLocationToCheck.Z; z++ {
 
-				bLocation := Coord{x, y, z}
+				bLocation := coord.Coord3d{X: x, Y: y, Z: z}
 				b.SetLocation(bLocation)
 
 				count := 0
@@ -274,5 +259,5 @@ func correlateLocation(a, b Scanner) (bool, Coord) {
 			}
 		}
 	}
-	return false, Coord{}
+	return false, coord.Coord3d{}
 }

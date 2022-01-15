@@ -3,6 +3,7 @@ package main
 import (
 	"strconv"
 	"zhatt/aoc2021/aoc"
+	"zhatt/aoc2021/coord"
 
 	"zhatt/aoc2021/day19/scanner"
 )
@@ -26,7 +27,7 @@ func parseInput(inputLines []string) []scanner.Scanner {
 	return scanners
 }
 
-func findBeacons(scanners []scanner.Scanner) ([]scanner.Coord, []scanner.Coord) {
+func findBeacons(scanners []scanner.Scanner) ([]coord.Coord3d, []coord.Coord3d) {
 
 	placedScanners := make(map[int]scanner.Scanner)
 	unplacedScanners := make(map[int]scanner.Scanner)
@@ -56,8 +57,8 @@ RESTART:
 		}
 	}
 
-	beaconMap := make(map[scanner.Coord]bool)
-	scannerLocations := make([]scanner.Coord, 0, len(scanners))
+	beaconMap := make(map[coord.Coord3d]bool)
+	scannerLocations := make([]coord.Coord3d, 0, len(scanners))
 
 	for _, placedScanner := range placedScanners {
 		scannerLocations = append(scannerLocations, placedScanner.Location())
@@ -66,7 +67,7 @@ RESTART:
 		}
 	}
 
-	beaconLocations := make([]scanner.Coord, 0, len(beaconMap))
+	beaconLocations := make([]coord.Coord3d, 0, len(beaconMap))
 
 	for beacon := range beaconMap {
 		beaconLocations = append(beaconLocations, beacon)
@@ -88,7 +89,7 @@ func part2(inputList []string) string {
 	maxDistance := 0
 	for _, b1 := range scannerLocations {
 		for _, b2 := range scannerLocations {
-			distance := scanner.DistanceManhattan(b1, b2)
+			distance := coord.DistanceManhattan3d(b1, b2)
 			if distance > maxDistance {
 				maxDistance = distance
 			}

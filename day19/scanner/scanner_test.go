@@ -2,6 +2,7 @@ package scanner
 
 import (
 	"testing"
+	"zhatt/aoc2021/coord"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -145,20 +146,14 @@ var exampleInput = []string{
 	"30,-46,-14",
 }
 
-func TestDistanceManhattan(t *testing.T) {
-	coord1 := Coord{1, 2, 3}
-	coord2 := Coord{5, 6, 7}
-	assert.Equal(t, 4+4+4, DistanceManhattan(coord1, coord2))
-}
-
 func TestParseInput(t *testing.T) {
 	scanners := ParseInput(exampleInput)
 	assert.Equal(t, 5, len(scanners))
 
 	assert.Equal(t, 4, scanners[4].Number())
-	assert.Equal(t, Coord{}, scanners[4].Location())
+	assert.Equal(t, coord.Coord3d{}, scanners[4].Location())
 	b := scanners[4].Beacons()
-	assert.Equal(t, Coord{X: 30, Y: -46, Z: -14}, b[len(b)-1])
+	assert.Equal(t, coord.Coord3d{X: 30, Y: -46, Z: -14}, b[len(b)-1])
 }
 
 func TestLoad(t *testing.T) {
@@ -174,10 +169,10 @@ func TestLoad(t *testing.T) {
 	beacons := scanner.Beacons()
 
 	assert.Equal(t, 3, len(beacons))
-	assert.Contains(t, beacons, Coord{X: 404, Y: -588, Z: -901})
-	assert.Contains(t, beacons, Coord{X: 528, Y: -643, Z: 409})
-	assert.Contains(t, beacons, Coord{X: -838, Y: 591, Z: 734})
-	assert.NotContains(t, beacons, Coord{X: 0, Y: 0, Z: 0})
+	assert.Contains(t, beacons, coord.Coord3d{X: 404, Y: -588, Z: -901})
+	assert.Contains(t, beacons, coord.Coord3d{X: 528, Y: -643, Z: 409})
+	assert.Contains(t, beacons, coord.Coord3d{X: -838, Y: 591, Z: 734})
+	assert.NotContains(t, beacons, coord.Coord3d{X: 0, Y: 0, Z: 0})
 }
 
 func TestRotate(t *testing.T) {
@@ -188,37 +183,37 @@ func TestRotate(t *testing.T) {
 
 	var tests = []struct {
 		x, y, z  int
-		expected Coord
+		expected coord.Coord3d
 	}{
 		// No rotation
-		{0, 0, 0, Coord{X: 1, Y: 2, Z: 3}},
+		{0, 0, 0, coord.Coord3d{X: 1, Y: 2, Z: 3}},
 
 		// Rotate CCW around x access
-		{1, 0, 0, Coord{X: 1, Y: -3, Z: 2}},
+		{1, 0, 0, coord.Coord3d{X: 1, Y: -3, Z: 2}},
 		// Verify again to make sure rotation applies to unrotated values
-		{1, 0, 0, Coord{X: 1, Y: -3, Z: 2}},
-		{2, 0, 0, Coord{X: 1, Y: -2, Z: -3}},
-		{3, 0, 0, Coord{X: 1, Y: 3, Z: -2}},
+		{1, 0, 0, coord.Coord3d{X: 1, Y: -3, Z: 2}},
+		{2, 0, 0, coord.Coord3d{X: 1, Y: -2, Z: -3}},
+		{3, 0, 0, coord.Coord3d{X: 1, Y: 3, Z: -2}},
 
 		// Rotate CCW around y access
-		{0, 1, 0, Coord{X: 3, Y: 2, Z: -1}},
+		{0, 1, 0, coord.Coord3d{X: 3, Y: 2, Z: -1}},
 		// Verify again to make sure rotation applies to unrotated values
-		{0, 1, 0, Coord{X: 3, Y: 2, Z: -1}},
-		{0, 2, 0, Coord{X: -1, Y: 2, Z: -3}},
-		{0, 3, 0, Coord{X: -3, Y: 2, Z: 1}},
+		{0, 1, 0, coord.Coord3d{X: 3, Y: 2, Z: -1}},
+		{0, 2, 0, coord.Coord3d{X: -1, Y: 2, Z: -3}},
+		{0, 3, 0, coord.Coord3d{X: -3, Y: 2, Z: 1}},
 
 		// Rotate CCW around z access
-		{0, 0, 1, Coord{X: -2, Y: 1, Z: 3}},
+		{0, 0, 1, coord.Coord3d{X: -2, Y: 1, Z: 3}},
 		// Verify again to make sure rotation applies to unrotated values
-		{0, 0, 1, Coord{X: -2, Y: 1, Z: 3}},
-		{0, 0, 2, Coord{X: -1, Y: -2, Z: 3}},
-		{0, 0, 3, Coord{X: 2, Y: -1, Z: 3}},
+		{0, 0, 1, coord.Coord3d{X: -2, Y: 1, Z: 3}},
+		{0, 0, 2, coord.Coord3d{X: -1, Y: -2, Z: 3}},
+		{0, 0, 3, coord.Coord3d{X: 2, Y: -1, Z: 3}},
 	}
 
 	scanner := New()
 	scanner.Load(data)
 	beacons := scanner.Beacons()
-	assert.Equal(t, beacons, []Coord{{X: 1, Y: 2, Z: 3}})
+	assert.Equal(t, beacons, []coord.Coord3d{{X: 1, Y: 2, Z: 3}})
 
 	for _, test := range tests {
 		scanner.SetRotation(NewRotation(test.x, test.y, test.z))
@@ -239,7 +234,7 @@ func TestOrientations(t *testing.T) {
 	scanner := New()
 	scanner.Load(data)
 
-	coords := make(map[Coord]bool)
+	coords := make(map[coord.Coord3d]bool)
 	for _, orientation := range Orientations {
 		scanner.SetRotation(orientation)
 		beacons := scanner.Beacons()
@@ -254,7 +249,7 @@ func TestCorrelateSelf(t *testing.T) {
 
 	found, location, rotation := Correlate(scanners[0], scanners[0])
 	assert.True(t, found)
-	assert.Equal(t, Coord{0, 0, 0}, location)
+	assert.Equal(t, coord.Coord3d{X: 0, Y: 0, Z: 0}, location)
 	assert.Equal(t, Rotation{0, 0, 0}, rotation)
 }
 
@@ -264,7 +259,7 @@ func TestCorrelateRotation(t *testing.T) {
 
 	found, location, rotation := Correlate(scanners[0], scanners[1])
 	assert.True(t, found)
-	assert.Equal(t, Coord{68, -1246, -43}, location)
+	assert.Equal(t, coord.Coord3d{X: 68, Y: -1246, Z: -43}, location)
 	assert.Equal(t, Rotation{2, 0, 2}, rotation)
 }
 
@@ -274,6 +269,6 @@ func TestNotCorrelated(t *testing.T) {
 
 	found, location, rotation := Correlate(scanners[0], scanners[2])
 	assert.False(t, found)
-	assert.Equal(t, Coord{}, location)
+	assert.Equal(t, coord.Coord3d{}, location)
 	assert.Equal(t, Rotation{}, rotation)
 }

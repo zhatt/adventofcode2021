@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 	"zhatt/aoc2021/aoc"
-	"zhatt/aoc2021/day19/scanner"
+	"zhatt/aoc2021/coord"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -152,9 +152,9 @@ func TestParseInput(t *testing.T) {
 	assert.Equal(t, 5, len(scanners))
 
 	assert.Equal(t, 4, scanners[4].Number())
-	assert.Equal(t, scanner.Coord{}, scanners[4].Location())
+	assert.Equal(t, coord.Coord3d{}, scanners[4].Location())
 	b := scanners[4].Beacons()
-	assert.Equal(t, scanner.Coord{X: 30, Y: -46, Z: -14}, b[len(b)-1])
+	assert.Equal(t, coord.Coord3d{X: 30, Y: -46, Z: -14}, b[len(b)-1])
 }
 
 func TestPart1Example1(t *testing.T) {
