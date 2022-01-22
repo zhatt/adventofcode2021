@@ -1,7 +1,6 @@
 package main
 
 import (
-	"math"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -23,10 +22,10 @@ func TestParseInput(t *testing.T) {
 func TestAbsInt(t *testing.T) {
 	assert.Equal(t, 10, absInt(10))
 	assert.Equal(t, 10, absInt(-10))
-	assert.Equal(t, math.MaxInt, absInt(math.MaxInt))
-	assert.Equal(t, math.MaxInt, absInt(math.MinInt+1))
+	assert.Equal(t, aoc.MaxInt, absInt(aoc.MaxInt))
+	assert.Equal(t, aoc.MaxInt, absInt(aoc.MinInt+1))
 	// Maximum negative int has no corresponding positive int
-	assert.Equal(t, math.MinInt, absInt(math.MinInt))
+	assert.Equal(t, aoc.MinInt, absInt(aoc.MinInt))
 }
 
 func TestPart1Example1(t *testing.T) {

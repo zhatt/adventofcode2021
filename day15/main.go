@@ -1,7 +1,6 @@
 package main
 
 import (
-	"math"
 	"strconv"
 	"zhatt/aoc2021/aoc"
 	"zhatt/aoc2021/coord"
@@ -38,7 +37,7 @@ func simulate(data [][]int) int {
 	// Initialize datastructures
 	for y := minBound.Y; y <= maxBound.Y; y++ {
 		for x := minBound.X; x <= maxBound.X; x++ {
-			distance := math.MaxInt
+			distance := aoc.MaxInt
 			if x == 0 && y == 0 {
 				distance = 0
 			}

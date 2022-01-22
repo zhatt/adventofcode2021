@@ -1,7 +1,6 @@
 package main
 
 import (
-	"math"
 	"strconv"
 	"strings"
 	"zhatt/aoc2021/aoc"
@@ -57,7 +56,7 @@ func simulate(crab_locations []int, algorithm fuel_algorithm) int {
 		}
 	}
 
-	min_fuel := math.MaxInt
+	min_fuel := aoc.MaxInt
 
 	for align_location := min_align_location; align_location <= max_align_location; align_location++ {
 		fuel := 0

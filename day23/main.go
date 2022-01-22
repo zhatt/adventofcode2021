@@ -1,7 +1,6 @@
 package main
 
 import (
-	"math"
 	"strconv"
 	"zhatt/aoc2021/aoc"
 
@@ -221,7 +220,7 @@ type workType struct {
 
 func simulate(burrow burrowType) int {
 
-	minScore := math.MaxInt
+	minScore := aoc.MaxInt
 
 	workQueue := workqueue.NewWorkQueue()
 	workQueue.Push(workqueue.NewItem(workType{burrow: burrow}, minScore))
