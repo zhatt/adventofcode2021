@@ -84,18 +84,6 @@ func Overlap(c1, c2 Cuboid) bool {
 	return overlapImpl(c1, c2) || overlapImpl(c2, c1)
 }
 
-func (c Cuboid) containsNormalizedVertex(vertex coord.Coord3d) bool {
-
-	// vertex must be inside and not just on the edge
-	return c.normalizedMinVertex.X < vertex.X &&
-		c.normalizedMaxVertex.X > vertex.X &&
-		c.normalizedMinVertex.Y < vertex.Y &&
-		c.normalizedMaxVertex.Y > vertex.Y &&
-		c.normalizedMinVertex.Z < vertex.Z &&
-		c.normalizedMaxVertex.Z > vertex.Z
-
-}
-
 func (c Cuboid) containsNormalizedX(normalizedX int) bool {
 	// must be inside and not just on the edge
 	return c.normalizedMinVertex.X < normalizedX &&
