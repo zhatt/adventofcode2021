@@ -1,4 +1,4 @@
-package workqueue
+package priorityqueue
 
 import (
 	"testing"
@@ -13,8 +13,8 @@ var items = map[coord.Coord]int{
 	{X: 4, Y: 0}: 4,
 }
 
-func create() WorkQueue {
-	wq := NewWorkQueue()
+func create() Queue {
+	wq := New()
 	for location, distance := range items {
 		work := NewItem(location, distance)
 		wq.Push(work)
@@ -42,8 +42,7 @@ func TestUpdate(t *testing.T) {
 	assert.Equal(t, -1, work.index)
 	wq.Push(work)
 	assert.Equal(t, 0, work.index)
-	work.Score = 10
-	wq.Update(work)
+	wq.Update(work, 10)
 	assert.NotEqual(t, 0, work.index)
 
 	assert.Equal(t, 4, wq.Len())

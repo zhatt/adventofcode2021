@@ -5,8 +5,13 @@ import (
 	"zhatt/aoc2021/aoc"
 	"zhatt/aoc2021/coord"
 
-	"zhatt/aoc2021/day15/workqueue"
+	"zhatt/aoc2021/priorityqueue"
 )
+
+type workType struct {
+	coord    coord.Coord
+	distance int
+}
 
 func parseInput(inputLines []string) [][]int {
 	data := make([][]int, 0, len(inputLines))
@@ -30,9 +35,9 @@ func simulate(data [][]int) int {
 	maxBound := coord.Coord{X: len(data[0]) - 1, Y: len(data) - 1}
 	bounds := []coord.Coord{minBound, maxBound}
 
-	workQueue := workqueue.NewWorkQueue()
+	workQueue := priorityqueue.New()
 	unvisited := make(map[coord.Coord]bool)
-	locations := make(map[coord.Coord]*workqueue.Item)
+	locations := make(map[coord.Coord]*priorityqueue.Item)
 
 	// Initialize datastructures
 	for y := minBound.Y; y <= maxBound.Y; y++ {
@@ -42,18 +47,20 @@ func simulate(data [][]int) int {
 				distance = 0
 			}
 			coord := coord.Coord{X: x, Y: y}
-			work := workqueue.NewItem(coord, distance)
+			work := workType{coord: coord, distance: distance}
+			queueItem := priorityqueue.NewItem(work, distance)
 			unvisited[coord] = true
-			locations[coord] = work
-			workQueue.Push(work)
+			locations[coord] = queueItem
+			workQueue.Push(queueItem)
 		}
 	}
 
 	// NB.  It may be possible to stop right after we find end distance but
 	// we are will calculate all distances instead.
 	for workQueue.Len() != 0 {
-		work := workQueue.Pop()
-		currentLocation := work.Location
+		queueItem := workQueue.Pop()
+		work := queueItem.Item.(workType)
+		currentLocation := work.coord
 
 		for _, delta := range []coord.Coord{
 			{X: 1, Y: 0},
@@ -70,19 +77,21 @@ func simulate(data [][]int) int {
 				continue
 			}
 
-			newNeighborDistance := work.Distance +
+			newNeighborDistance := work.distance +
 				data[neighborLocation.Y][neighborLocation.X]
 
 			neighbor := locations[neighborLocation]
-			if newNeighborDistance < neighbor.Distance {
-				neighbor.Distance = newNeighborDistance
-				workQueue.Update(neighbor)
+			if newNeighborDistance < neighbor.Item.(workType).distance {
+				work := neighbor.Item.(workType)
+				work.distance = newNeighborDistance
+				neighbor.Item = work
+				workQueue.Update(neighbor, newNeighborDistance)
 			}
 		}
 		unvisited[currentLocation] = false
 	}
 
-	return locations[maxBound].Distance
+	return locations[maxBound].Item.(workType).distance
 }
 
 func makeFullMap(scanData [][]int) [][]int {

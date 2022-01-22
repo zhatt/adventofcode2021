@@ -3,8 +3,7 @@ package main
 import (
 	"strconv"
 	"zhatt/aoc2021/aoc"
-
-	"zhatt/aoc2021/day23/workqueue"
+	"zhatt/aoc2021/priorityqueue"
 )
 
 /*
@@ -222,8 +221,8 @@ func simulate(burrow burrowType) int {
 
 	minScore := aoc.MaxInt
 
-	workQueue := workqueue.NewWorkQueue()
-	workQueue.Push(workqueue.NewItem(workType{burrow: burrow}, minScore))
+	workQueue := priorityqueue.New()
+	workQueue.Push(priorityqueue.NewItem(workType{burrow: burrow}, minScore))
 
 	beenThere := make(map[burrowType]int)
 	beenThere[burrow] = 0
@@ -276,7 +275,7 @@ func simulate(burrow burrowType) int {
 				}
 				beenThere[newWork.burrow] = newWork.score
 
-				workQueue.Push(workqueue.NewItem(newWork, newWork.score))
+				workQueue.Push(priorityqueue.NewItem(newWork, newWork.score))
 			}
 		}
 	}
