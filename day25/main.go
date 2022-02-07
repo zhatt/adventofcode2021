@@ -109,23 +109,27 @@ func part1(inputList []string) string {
 
 	steps := 0
 
+	current := cucumberMap.String()
+
 	for {
 		steps++
 
-		current := cucumberMap.String()
 		cucumberMap.move()
+
 		next := cucumberMap.String()
 
 		if current == next {
 			break
 		}
+
+		current = next
 	}
 
 	return strconv.Itoa(steps)
 }
 
 func part2(inputList []string) string {
-	//	burrow := parseInput(inputList, part2e)
+	// No part 2 on day 25
 
 	return strconv.Itoa(0)
 }
