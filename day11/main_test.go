@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -34,6 +35,12 @@ func TestParseInput(t *testing.T) {
 	assert.Equal(t, 10, len(grid.octos))
 	assert.Equal(t, 10, len(grid.octos[0]))
 	assert.Equal(t, 4, grid.octos[2][1].energy)
+}
+
+func TestStringer(t *testing.T) {
+	grid := parseInput(exampleInput2)
+
+	assert.Equal(t, strings.Join(exampleInput2, "\n"), grid.String())
 }
 
 func TestPart1Example1(t *testing.T) {

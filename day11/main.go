@@ -79,11 +79,11 @@ func parseInput(inputList []string) *grid {
 func (grid *grid) String() string {
 	s := ""
 	for y := range grid.octos {
+		// This adds newline to all lines except last
+		if y != 0 {
+			s += "\n"
+		}
 		for x := range grid.octos[y] {
-			// This adds newline to all lines except last
-			if x != 0 && y != 0 {
-				s += "\n"
-			}
 			energy := grid.octos[x][y].energy
 			s += fmt.Sprintf("%d", energy)
 		}
