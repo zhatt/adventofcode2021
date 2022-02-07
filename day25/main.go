@@ -2,6 +2,7 @@ package main
 
 import (
 	"strconv"
+	"strings"
 	"zhatt/aoc2021/aoc"
 )
 
@@ -42,17 +43,17 @@ func parseInput(inputLines []string) *cucumberMap {
 }
 
 func (m *cucumberMap) String() string {
-	s := ""
+	s := make([]string, 0, m.sizeX*m.sizeY)
 	for y := 0; y < m.sizeY; y++ {
 		if y != 0 {
-			s += "\n"
+			s = append(s, "\n")
 		}
 		for x := 0; x < m.sizeX; x++ {
-			s += m.data[x][y]
+			s = append(s, m.data[x][y])
 		}
 	}
 
-	return s
+	return strings.Join(s, "")
 }
 
 func (m *cucumberMap) moveEast() {
