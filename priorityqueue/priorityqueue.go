@@ -6,8 +6,8 @@ import (
 	"container/heap"
 )
 
-// Item is the structure the user manipulates.  The WorkQueue is a heap sorted
-// by minimum distance.
+// Item is the structure the user manipulates.  The Queue is a heap sorted by
+// minimum priority.
 type Item struct {
 	Item     interface{}
 	priority int
