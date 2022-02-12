@@ -43,17 +43,22 @@ func parseInput(inputLines []string) *cucumberMap {
 }
 
 func (m *cucumberMap) String() string {
-	s := make([]string, 0, m.sizeX*m.sizeY)
+
+	s := strings.Builder{}
+	s.Grow((m.sizeX + 1) * m.sizeY)
+
 	for y := 0; y < m.sizeY; y++ {
 		if y != 0 {
-			s = append(s, "\n")
+			_, err := s.WriteString("\n")
+			aoc.PanicOnError(err)
 		}
 		for x := 0; x < m.sizeX; x++ {
-			s = append(s, m.data[x][y])
+			_, err := s.WriteString(m.data[x][y])
+			aoc.PanicOnError(err)
 		}
 	}
 
-	return strings.Join(s, "")
+	return s.String()
 }
 
 func (m *cucumberMap) moveEast() {
