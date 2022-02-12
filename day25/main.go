@@ -134,12 +134,7 @@ func part1(inputList []string) string {
 	return strconv.Itoa(steps)
 }
 
-func part2(inputList []string) string {
-	// No part 2 on day 25
-
-	return strconv.Itoa(0)
-}
-
 func main() {
-	aoc.MainFunc(part1, part2)
+	// No part2 on day 25.  The last gold star is always free.
+	aoc.MainFunc(part1)
 }

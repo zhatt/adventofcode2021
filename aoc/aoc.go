@@ -44,28 +44,31 @@ func ReadInput(inputFile string) []string {
 	return lines
 }
 
-// MainFunc is implements standard Advent of Code main function.
-// It parses arguments and calls part1 or part2 function.
-func MainFunc(part1, part2 partFunc) {
+func mainFunc(args []string, partFuncs ...partFunc) string {
 	var partOpt = 1
 	var inputFile = ""
 
-	flag.StringVar(&inputFile, "input", "", "input file")
-	flag.IntVar(&partOpt, "part", 1, "part 1 or 2")
-	flag.Parse()
+	flags := flag.FlagSet{}
 
-	if partOpt != 1 && partOpt != 2 {
+	flags.StringVar(&inputFile, "input", "", "input file")
+	flags.IntVar(&partOpt, "part", 1, "part to run")
+	err := flags.Parse(args)
+	PanicOnError(err)
+
+	if partOpt > len(partFuncs) {
 		panic("Invalid --part flag")
 	}
 
 	inputLines := ReadInput(inputFile)
-	result := ""
-	if partOpt == 1 {
-		result = part1(inputLines)
-	} else {
-		result = part2(inputLines)
-	}
-	fmt.Println(result)
+
+	result := partFuncs[partOpt-1](inputLines)
+	return result
+}
+
+// MainFunc implements standard Advent of Code main function.  It parses
+// arguments and calls part1 or part2 function.
+func MainFunc(partFuncs ...partFunc) {
+	fmt.Println(mainFunc(os.Args[1:], partFuncs...))
 }
 
 // PanicOnError - panic on error.

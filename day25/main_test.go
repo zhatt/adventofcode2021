@@ -90,15 +90,3 @@ func TestPart1Input(t *testing.T) {
 	result := part1(aoc.ReadInput("input.txt"))
 	assert.Equal(t, "482", result)
 }
-
-/*
-func TestPart2Example1(t *testing.T) {
-	result := part2(exampleInput)
-	assert.Equal(t, "44169", result)
-}
-
-func TestPart2Input(t *testing.T) {
-	result := part2(aoc.ReadInput("input.txt"))
-	assert.Equal(t, "43481", result)
-}
-*/
